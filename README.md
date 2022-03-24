@@ -84,4 +84,3 @@ Organizes all your script output
 <div>Let oo send an email immediately after the script has run with a return code unequal to 0, when requested.</div>
 </li>
 </ul>
-<div id="commentics">{Quotes}</div>
