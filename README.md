@@ -34,7 +34,7 @@ Organizes all your script output
 <pre>mkdir -p /etc/oo/users.conf<br />chmod 1777 /etc/oo/users.conf<br />mkdir -p /var/log/oo<br />chmod 1777 /var/log/oo</pre>
 <p>All the other files and directories will be created per user and per user-script by the oo-scripts.</p>
 <h3>2. Download oo.zip, extract the files and copy them to the right directories</h3>
-<pre>cd<br />mkdir temp&nbsp;&nbsp;&nbsp;&nbsp; # if already exists, create a different one<br />cd temp<br />wget <a href="https://github.com/neeltje57/output-organizer.git">https://github.com/neeltje57/output-organizer.git</a><br />unzip the file<br />mv oo oocd oohk oorp /usr/local/bin<br />mv oo.conf /etc/oo<br />cd<br />rm -rf temp</pre>
+<pre>cd<br />mkdir temp&nbsp;&nbsp;&nbsp;&nbsp; # if already exists, create a different one<br />cd temp<br />wget <a href="https://github.com/neeltje57/output-organizer/archive/refs/heads/master.zip">https://github.com/neeltje57/output-organizer/archive/refs/heads/master.zip</a><br />unzip master.zip<br />mv oo oocd oohk oorp /usr/local/bin<br />mv oo.conf /etc/oo<br />cd<br />rm -rf temp</pre>
 <h3>3. Check, adjust the parameters in /etc/oo/oo.conf</h3>
 <pre>oo_delete_after_days_min=3<br />oo_delete_after_days_max=99<br />oo_logbasepath=/var/log/oo<br />oo_report_email=root</pre>
 <ul>
