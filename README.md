@@ -20,7 +20,7 @@ Organizes all your script output
 <h2>Installation</h2>
 <ol>
 <li>Create the paths;</li>
-<li><a title="Download" href="uploads/oo/oo.zip">Download oo.zip</a>, extract the files and copy them to the right directories;</li>
+<li>Download oo.zip, extract the files and copy them to the right directories;</li>
 <li>Check, adjust the parameters in /etc/oo/oo.conf;</li>
 <li>Schedule the housekeeping scripts.</li>
 </ol>
