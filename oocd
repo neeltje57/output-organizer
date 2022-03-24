@@ -1,0 +1,58 @@
+#!/bin/bash
+# ==================================================================================
+# /usr/local/bin/oocdnew
+# ==================================================================================
+# Change this variable to the directory where the configuration files are stored.  =
+# Normally this would be: oo_confpath="/etc/oos"                                   =
+# The quotes are needed in case there are spaces in the directory name.            =
+oo_confpath="/home/peter/oodev/etc/oo"
+oo_runonce_minutes=0
+# ==================================================================================
+
+# ===========================================================================
+# Don't change anything below this line unless you know what you are doing. =
+# ===========================================================================
+# source /usr/local/bin/oorunonce
+
+# Load configuration file
+# Get parms from system config file
+if [[ -f "$oo_confpath"/oo.conf ]] ; then
+  eval $(grep "^oo_logbasepath=" "$oo_confpath"/oo.conf)
+  eval $(grep "^oo_report_email=" "$oo_confpath"/oo.conf)
+fi
+if [[ -z "$oo_logbasepath" \
+   ]]; then
+  echo "One or more mandatory variables are not set in the config file: ""$oo_confpath"/oo.conf
+  echo "  oo_logbasepath          : ""$oo_logbasepath"
+  echo "see documentation"
+  exit 1
+fi
+
+oo_temp_logfile=$(mktemp)
+oo_deleted_dirs=0
+
+{
+# loop through the directories
+for oocd_directory in $oo_logbasepath/*
+do
+  if [[ -d $oocd_directory ]]; then
+    oocd_userdir=`basename "$oocd_directory"`
+    if [[ -z "$(getent passwd $oocd_userdir)" ]]; then
+      # delete directory of non existent user
+      echo "Deleting "$oocd_directory" ..."
+      (( oo_deleted_dirs++ ))
+      rm -rf "$oocd_directory"
+    fi
+  fi
+done
+} >$oo_temp_logfile
+
+if [[ ! -z "$oo_report_email" ]]; then
+  echo "Sending email to $oo_report_email"
+  cat $oo_temp_logfile | mail $oo_report_email -s "$(hostname)-$(basename $0)-$oo_deleted_dirs directories deleted"
+else
+  echo "No email requested"
+fi
+
+cat $oo_temp_logfile
+rm -f $oo_temp_logfile
