@@ -78,9 +78,12 @@ Organizes all your script output
 <div>Give oo a version number together with an install script.</div>
 </li>
 <li>
-<div>Create an installation document</div>
+<div>Create an installation document.</div>
 </li>
 <li>
 <div>Let oo send an email immediately after the script has run with a return code unequal to 0, when requested.</div>
+</li>
+<li>
+<div>Let oo signal a hanging script (set maximum run time or something like that.</div>
 </li>
 </ul>
