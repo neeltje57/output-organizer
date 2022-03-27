@@ -1,3 +1,31 @@
+Don't change anything in this section or the file might be deleted during housekeeping.
+Script result code: 000
+Expiration date   : 2022-03-30
+Execution started : 2022-03-27_19:51:59.865
+script            : oocd
+User              : peter
+Execution ended   : 2022-03-27_19:51:59.893
+stdout            : /home/peter/git/output-organizer/var/log/oo/peter/oocd/oocd.2022-03-27_19:51:59.865.out
+temp_stdout       : /tmp/tmp.YsWSXKQzZm
+temp_stderr       : /tmp/tmp.Buqnl8sOj8
+Expiration days   : 3
+Expiration (min)  : 3
+Expiration (max)  : 100
+timeout (in sec)  : 60
+variable 1        : 
+variable 2        : 
+variable 3        : 
+variable 4        : 
+variable 5        : 
+variable 6        : 
+variable 7        : 
+variable 8        : 
+
+========== stderr below ==========
+stderr is empty
+========== stderr above ==========
+
+========== script below ==========
 #!/bin/bash
 # ==================================================================================
 # /usr/local/bin/oocdnew
@@ -53,3 +81,8 @@ done
 
 cat $oo_temp_logfile
 rm -f $oo_temp_logfile
+========== script above ==========
+
+========== stdout below ==========
+stdout is empty
+========== stdout above ==========

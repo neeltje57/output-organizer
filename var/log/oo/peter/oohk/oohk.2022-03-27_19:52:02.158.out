@@ -1,3 +1,31 @@
+Don't change anything in this section or the file might be deleted during housekeeping.
+Script result code: 000
+Expiration date   : 2022-03-30
+Execution started : 2022-03-27_19:52:02.158
+script            : oohk
+User              : peter
+Execution ended   : 2022-03-27_19:52:06.435
+stdout            : /home/peter/git/output-organizer/var/log/oo/peter/oohk/oohk.2022-03-27_19:52:02.158.out
+temp_stdout       : /tmp/tmp.Y0E4KOUcGG
+temp_stderr       : /tmp/tmp.pjgTYjovN3
+Expiration days   : 3
+Expiration (min)  : 3
+Expiration (max)  : 100
+timeout (in sec)  : 60
+variable 1        : 
+variable 2        : 
+variable 3        : 
+variable 4        : 
+variable 5        : 
+variable 6        : 
+variable 7        : 
+variable 8        : 
+
+========== stderr below ==========
+stderr is empty
+========== stderr above ==========
+
+========== script below ==========
 #!/bin/bash
 # ==================================================================================
 # /usr/local/bin/oohk
@@ -124,3 +152,32 @@ cat "$oo_reportfile"
 #   echo "No email requested"
 # fi
 rm -f "$oo_reportfile"
+========== script above ==========
+
+========== stdout below ==========
+Processing files for user: peter
+Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/oocd
+Processed files        : 8
+Processed valid dates  : 8
+Processed expired files: 0
+Processed invalid dates: 0
+Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/oorp
+Processed files        : 6
+Processed valid dates  : 6
+Processed expired files: 0
+Processed invalid dates: 0
+Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/ootest
+Processed files        : 1140
+Processed valid dates  : 1140
+Processed expired files: 0
+Processed invalid dates: 0
+Total files for user peter: 1154
+Total empty directories for user peter: 0
+
+Totals
+Total files            : 1154
+Total valid dates      : 1154
+Total expired files    : 0
+Total invalid dates    : 0
+Total empty directories: 0
+========== stdout above ==========

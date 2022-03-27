@@ -1,16 +1,17 @@
 Don't change anything in this section or the file might be deleted during housekeeping.
-Script result code: 000
-Expiration date   : 2022-03-26
-Execution started : 2022-03-23_12:29:16.049
-script            : ootest
+Script result code: 124
+Expiration date   : 2022-04-01
+Execution started : 2022-03-27_21:02:01.524
+script            : /home/peter/git/output-organizer/ootest
 User              : peter
-Execution ended   : 2022-03-23_12:29:16.059
-stdout            : /home/peter/oodev/var/log/oo/peter/ootest/ootest.2022-03-23_12:29:16.049.out
-temp_stdout       : /tmp/tmp.9K5KRdhSvq
-temp_stderr       : /tmp/tmp.a0UaAao4N6
-Expiration days   : 3
+Execution ended   : 2022-03-27_21:02:03.533
+stdout            : /home/peter/git/output-organizer/var/log/oo/peter/ootest/ootest.2022-03-27_21:02:01.524.out
+temp_stdout       : /tmp/tmp.lXdqRI9sKq
+temp_stderr       : /tmp/tmp.2WTrauBDkG
+Expiration days   : 5
 Expiration (min)  : 3
 Expiration (max)  : 100
+timeout (in sec)  : 2
 variable 1        : 
 variable 2        : 
 variable 3        : 
@@ -26,7 +27,7 @@ stderr is empty
 
 ========== script below ==========
 #!/bin/bash
-
+sleep 10s
 exit 0
 ========== script above ==========
 

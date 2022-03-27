@@ -1,3 +1,31 @@
+Don't change anything in this section or the file might be deleted during housekeeping.
+Script result code: 000
+Expiration date   : 2022-03-30
+Execution started : 2022-03-27_19:52:09.795
+script            : oorp
+User              : peter
+Execution ended   : 2022-03-27_19:52:13.707
+stdout            : /home/peter/git/output-organizer/var/log/oo/peter/oorp/oorp.2022-03-27_19:52:09.795.out
+temp_stdout       : /tmp/tmp.6PcTmL6SS6
+temp_stderr       : /tmp/tmp.g5EGfBkZI4
+Expiration days   : 3
+Expiration (min)  : 3
+Expiration (max)  : 100
+timeout (in sec)  : 60
+variable 1        : 
+variable 2        : 
+variable 3        : 
+variable 4        : 
+variable 5        : 
+variable 6        : 
+variable 7        : 
+variable 8        : 
+
+========== stderr below ==========
+stderr is empty
+========== stderr above ==========
+
+========== script below ==========
 #!/bin/bash
 # ==================================================================================
 # /usr/local/bin/oorp
@@ -128,3 +156,33 @@ cat "$oo_reportfile"
 
 rm -f "$oo_reportfile"
 rm -f "$oo_temp_user_output"
+========== script above ==========
+
+========== stdout below ==========
+Report days ago not specified, assuming 1 (Yesterday)
+Report date is: 2022-03-26
+Processing files for user: peter
+Report date is: 2022-03-26
+  Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/oocd
+    Processed files : 8
+    Return code <> 0: 0
+  Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/oohk
+    001 /home/peter/git/output-organizer/var/log/oo/peter/oohk/oohk.2022-03-26_22:39:45.826.out
+    Processed files : 9
+    Return code <> 0: 1
+  Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/oorp
+    Processed files : 6
+    Return code <> 0: 0
+  Processing files from directory: /home/peter/git/output-organizer/var/log/oo/peter/ootest
+    124 /home/peter/git/output-organizer/var/log/oo/peter/ootest/ootest.2022-03-26_23:58:01.325.out
+    124 /home/peter/git/output-organizer/var/log/oo/peter/ootest/ootest.2022-03-26_23:59:01.359.out
+    Processed files : 1141
+    Return code <> 0: 2
+  Total files for user peter: 1164
+  Total with returncode <> 0 : 3
+
+
+Totals
+  Total files                : 1164
+  Total with returncode <> 0 : 3
+========== stdout above ==========
