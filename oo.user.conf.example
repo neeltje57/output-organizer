@@ -1,0 +1,15 @@
+# The default parameters for every script can be overruled in this file.
+# normal path and name for this file will be, as an example, for user=root
+# and scriptname=ootest: /etc/oo/users.conf/root/ootest
+# If another user runs a script with the same name, a new file must be
+# created for that user.
+#
+oo_max_run_time_sec=2
+# The maximum time a script is allowed to run. After that time, 
+# the script will be killed.
+#
+oo_delete_after_days=3
+# This parameter set the days before an output file will be deleted.
+#
+oo_user_email=root
+# A user can ask for an email, when the return code <> 0.
