@@ -51,14 +51,12 @@ oo_delete_after_days_max=99
 oo_logbasepath=/var/log/oo
 oo_default_run_time_sec=60
 ~~~~
-oo_delete_after_days_min 
-:  sets the system minimum amount of days the output will be saved.
-oo_delete_after_days_max 
-:  sets the maximum amount of days the output will be saved.
-oo_logbasepath
-:  sets the path where the logfiles will be saved
-oo_default_run_time_sec
-:  sets the maximum time a script can run. After that, the script will abend with a return code 124.
+~~~~
+oo_delete_after_days_min - sets the system minimum amount of days the output will be saved.
+oo_delete_after_days_max - sets the maximum amount of days the output will be saved.
+oo_logbasepath - sets the path where the logfiles will be saved
+oo_default_run_time_sec - sets the maximum time a script can run. After that, the script will abend with a return code 124.
+~~~~
 ## 4. Schedule the housekeeping scripts
 **Remark:** To easily browse the output files, you can use a browser you like. If you don't know what browser to use, I recommend **lynx**, a text only web browser which makes it very easy to browse your directories and view the output files. To install lynx:
 > apt-get install lynx
