@@ -17,7 +17,7 @@ On a linux server, you often run a lot of scripts. To organize the output of tho
 * ...
 # Installation
 1. Create the paths;
-2. Download oo.zip, extract the files and copy them to the right directories;
+2. Download repository, extract the files and copy them to the right directories;
 3. Check, adjust the parameters in /etc/oo/oo.conf;
 4. Schedule the housekeeping scripts.
 **Remark:** oo together with the 3 housekeeping scripts need to know where to find the configuration settings and where to write the output to. If you don't agree with the defaults, you have to change this before the first run: If so, change the following in the scripts:
@@ -32,7 +32,7 @@ On a linux server, you often run a lot of scripts. To organize the output of tho
   chmod 1777 /var/log/oo
 ~~~~
 All the other files and directories will be created per user and per user-script by the oo-scripts.
-## 2. Download oo.zip, extract the files and copy them to the right directories
+## 2. Download the repository, extract the files and copy them to the right directories
 ~~~~
 cd
 mkdir temp      # if already exists, create a different one
@@ -49,7 +49,7 @@ rm -rf temp
 oo_delete_after_days_min=3
 oo_delete_after_days_max=99
 oo_logbasepath=/var/log/oo
-oo_report_email=root
+oo_default_run_time_sec=60
 ~~~~
 oo_delete_after_days_min 
 :  sets the system minimum amount of days the output will be saved.
@@ -57,8 +57,8 @@ oo_delete_after_days_max
 :  sets the maximum amount of days the output will be saved.
 oo_logbasepath
 :  sets the path where the logfiles will be saved
-oo_report_email
-:  sets the email address where the housekeeping scripts will send the reports. If no mail command is setup on your system, emails will not be sent.
+oo_default_run_time_sec
+:  sets the maximum time a script can run. After that, the script will abend with a return code 124.
 ## 4. Schedule the housekeeping scripts
 **Remark:** To easily browse the output files, you can use a browser you like. If you don't know what browser to use, I recommend **lynx**, a text only web browser which makes it very easy to browse your directories and view the output files. To install lynx:
 > apt-get install lynx
