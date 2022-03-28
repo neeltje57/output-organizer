@@ -119,12 +119,5 @@ echo "  Total with returncode <> 0 : ""$oo_totalfiles_resultcode"
 } >"$oo_reportfile"
 cat "$oo_reportfile"
 
-# if [[ ! -z "$oo_report_email" ]]; then
-#   echo "Sending email to $oo_report_email"
-#   cat "$oo_reportfile" | mail $oo_report_email -s "$(hostname)-$(basename $0)-$oo_totalfiles_resultcode scripts with return code <> 0"
-# else
-#   echo "No overall email requested"
-# fi
-
 rm -f "$oo_reportfile"
 rm -f "$oo_temp_user_output"

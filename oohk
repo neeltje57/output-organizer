@@ -117,10 +117,4 @@ echo "Total invalid dates    : ""$oo_totalinvaliddates"
 echo "Total empty directories: ""$oo_totalemptydirs"
 } >"$oo_reportfile"
 cat "$oo_reportfile"
-# if [[ ! -z "$oo_report_email" ]]; then
-#   echo "Sending email to oou_report_email"
-#   cat "$oo_reportfile" | mail $oo_report_email -s "$(hostname)-$(basename $0)-$oo_totalexpiredfiles files deleted"
-# else
-#   echo "No email requested"
-# fi
 rm -f "$oo_reportfile"

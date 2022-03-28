@@ -44,12 +44,5 @@ do
 done
 } >$oo_temp_logfile
 
-# if [[ ! -z "$oo_report_email" ]]; then
-#   echo "Sending email to $oo_report_email"
-#   cat $oo_temp_logfile | mail $oo_report_email -s "$(hostname)-$(basename $0)-$oo_deleted_dirs directories deleted"
-# else
-#   echo "No email requested"
-# fi
-
 cat $oo_temp_logfile
 rm -f $oo_temp_logfile
