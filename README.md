@@ -18,8 +18,9 @@ On a linux server, you often run a lot of scripts. To organize the output of tho
 # Installation
 1. Create the paths;
 2. Download repository, extract the files and copy them to the right directories;
-3. Check, adjust the parameters in /etc/oo/oo.conf;
-4. Schedule the housekeeping scripts.
+3. Check, adjust the parameters in /etc/oo/oo.conf.example.
+4. Check, adjust the parameters in /etc/oo/oo.user.conf.example.
+5. Schedule the housekeeping scripts.
 **Remark:** oo together with the 3 housekeeping scripts need to know where to find the configuration settings and where to write the output to. If you don't agree with the defaults, you have to change this before the first run: If so, change the following in the scripts:
 * At the top of the 4 scripts (oo, oocd, oohk and oorp), change the parameter oo_confpath="/etc/oo" to something more appropriate for you.
 * At the top of the configuration file /etc/oo/oo.conf change the parameter oo_logbasepath="/var/log/oo" to something more appropriate for you.
@@ -44,20 +45,17 @@ mv oo.conf /etc/oo
 cd
 rm -rf temp
 ~~~~
-## 3. Check, adjust the parameters in /etc/oo/oo.conf
+## 3. Check, adjust the parameters in oo.conf.example
+You can use the file oo.conf.example and move and rename it to /etc/oo/oo.conf. Check if the default parameters are suitable for you, and if not, adjust them. See the file oo.conf.example for a description of the parameters.
 ~~~~
 oo_delete_after_days_min=3
 oo_delete_after_days_max=99
 oo_logbasepath=/var/log/oo
 oo_default_run_time_sec=60
 ~~~~
-~~~~
-oo_delete_after_days_min - sets the system minimum amount of days the output will be saved.
-oo_delete_after_days_max - sets the maximum amount of days the output will be saved.
-oo_logbasepath - sets the path where the logfiles will be saved
-oo_default_run_time_sec - sets the maximum time a script can run. After that, the script will abend with a return code 124.
-~~~~
-## 4. Schedule the housekeeping scripts
+## 4. Check, adjust the parameters in oo.user.conf.example
+For every script you run with oo, it is possible to give it adjusted parameters. You don't have to, in which case the defaults will be used. This is done through a configuration file. An example is in oo.user.conf.example. If you want to override these default parameters, for e.g. the script with the name *scriptname* and the user with the name *userid* move/rename this file oo.user.conf.example to /etc/oo/users.conf/userid/scriptname.
+## 5. Schedule the housekeeping scripts
 **Remark:** To easily browse the output files, you can use a browser you like. If you don't know what browser to use, I recommend **lynx**, a text only web browser which makes it very easy to browse your directories and view the output files. To install lynx:
 > apt-get install lynx
 ### 4.1 oo
