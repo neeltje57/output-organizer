@@ -21,6 +21,7 @@ On a linux server, you often run a lot of scripts. To organize the output of tho
 3. Check, adjust the parameters in /etc/oo/oo.conf.example.
 4. Check, adjust the parameters in /etc/oo/oo.user.conf.example.
 5. Schedule the housekeeping scripts.
+
 **Remark:** oo together with the 3 housekeeping scripts need to know where to find the configuration settings and where to write the output to. If you don't agree with the defaults, you have to change this before the first run: If so, change the following in the scripts:
 * At the top of the 4 scripts (oo, oocd, oohk and oorp), change the parameter oo_confpath="/etc/oo" to something more appropriate for you.
 * At the top of the configuration file /etc/oo/oo.conf change the parameter oo_logbasepath="/var/log/oo" to something more appropriate for you.
