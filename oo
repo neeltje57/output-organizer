@@ -62,6 +62,7 @@ oo_confpath="/home/peter/oo/etc/oo"
     eval $(grep "^oo_max_run_time_sec=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
     eval $(grep "^oo_delete_after_days=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
     eval $(grep "^oo_user_email=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
+    eval $(grep "^oo_email_rc_ge=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname") 
   fi
 
 # if oo_max_run_time_sec is not set, give it the default value
@@ -125,6 +126,21 @@ oo_result=$(echo 000$oo_result | tail -c 4)
   echo "variable 6        : $7"
   echo "variable 7        : $8"
   echo "variable 8        : $9"
+  echo "email address     : $oo_user_email"
+  echo "oo_email_rc_ge    : $oo_email_rc_ge"
+
+# Email if requested
+  oo_sending_email=false
+  if [[ ! -z "$oo_user_email" ]] && [[ ! -z "$oo_email_rc_ge" ]]; then
+    if [[ "$oo_result" -ge "$oo_email_rc_ge" ]]; then
+      echo "Sending email     : yes"
+      oo_sending_email=true
+    else 
+      echo "Sending email     : no"
+    fi
+  else
+    echo "sending email     : No"
+  fi
   echo
 
 # stderr
@@ -157,13 +173,8 @@ oo_result=$(echo 000$oo_result | tail -c 4)
   } >"$oo_stdout"
 
 # Email if requested
-  if [[ ! -z "$oo_user_email" && \
-              "$oo_result" -ne 0 \
-      ]] ; then
-    echo "Sending email" >>"$oo_stdout"
+  if [[ "$oo_sending_email" ]]; then
     cat $oo_stdout | mail $oo_user_email -s "$(hostname)-$(whoami)-$oo_base_scriptname"
-  else
-    echo "No email requested" >>"$oo_stdout"
   fi
 
 exit 0

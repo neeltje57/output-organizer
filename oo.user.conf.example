@@ -12,4 +12,12 @@ oo_delete_after_days=3
 # This parameter set the days before an output file will be deleted.
 #
 oo_user_email=root
-# A user can ask for an email, when the return code <> 0.
+# The email address to send the output to (depends also on the next parameter.
+#
+oo_email_rc_ge=0
+# With this parameter you tell oo when to send an email. If the return code 
+# is greater or equal (ge) to this parameter, the email will be send (when 
+# email address is given).
+# 0 means always an email
+# 1 means only when return code is not equal to zero
+# 2 and bigger send an email when greater than. 
