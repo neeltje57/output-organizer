@@ -173,7 +173,7 @@ oo_result=$(echo 000$oo_result | tail -c 4)
   } >"$oo_stdout"
 
 # Email if requested
-  if [[ "$oo_sending_email" ]]; then
+  if [[ "$oo_sending_email" = true ]]; then
     cat $oo_stdout | mail $oo_user_email -s "$(hostname)-$(whoami)-$oo_base_scriptname"
   fi
 
