@@ -48,12 +48,6 @@ rm -rf temp
 ~~~~
 ## 3. Check, adjust the parameters in oo.conf.example
 You can use the file oo.conf.example and move and rename it to /etc/oo/oo.conf. Check if the default parameters are suitable for you, and if not, adjust them. See the file oo.conf.example for a description of the parameters.
-~~~~
-oo_delete_after_days_min=3
-oo_delete_after_days_max=99
-oo_logbasepath=/var/log/oo
-oo_default_run_time_sec=60
-~~~~
 ## 4. Check, adjust the parameters in oo.user.conf.example
 For every script you run with oo, it is possible to give it adjusted parameters. You don't have to, in which case the defaults will be used. This is done through a configuration file. An example is in oo.user.conf.example. If you want to override these default parameters, for e.g. the script with the name *scriptname* and the user with the name *userid* move/rename this file oo.user.conf.example to /etc/oo/users.conf/userid/scriptname.
 ## 5. Schedule the housekeeping scripts
@@ -75,6 +69,11 @@ oohk is a housekeeping script which checks all the output files in /var/log/oo/u
 ### 4.4 oorp
 oorp is a housekeeping script and, when requested, will inform the individual users and/or the administrator with an overview of the scipts which ended unequal to zero. By default it checks Yesterday, but you can adjust that by a parameter. 0 is Today,1 is Yesterday,2 is the day before Yesterday and so on. You can schedule this script in cron once a day in cron (crontab -e):
 > 10 0 * * * /usr/local/bin/oo /usr/local/bin/oorp 1
+# Non default locations
+oo together with the 3 housekeeping scripts need to know where to find the configuration settings and where to write the output to. If you don't agree with the defaults, you have to change this before the first run: If so, change the following in the scripts:
+* At the top of the 4 scripts (oo, oocd, oohk and oorp), change the parameter oo_confpath="/etc/oo" to something more appropriate for you.
+* At the top of the configuration file /etc/oo/oo.conf change the parameter oo_logbasepath="/var/log/oo" to something more appropriate for you.
+* In the commands above, adjust the commands to fit your changes.
 # To do list
 * oohk skips its own directory.
 * Let oo always create a user-script config file for every script automatically instead of manually by the user when needed.
