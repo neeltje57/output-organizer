@@ -77,5 +77,5 @@ oo together with the 3 housekeeping scripts need to know where to find the confi
 * Gunzip the output files.
 * Give oo a version number together with an install script.
 * ~~Create an installation document.~~
-* Let oo send an email immediately after the script has run with a return code unequal to 0, when requested.
+* ~~Let oo send an email immediately after the script has run with a return code unequal to 0, when requested.~~
 * ~~Let oo signal a hanging script (set maximum run time or something like that.~~
