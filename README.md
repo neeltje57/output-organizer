@@ -73,10 +73,9 @@ oo together with the 3 housekeeping scripts need to know where to find the confi
 # To do list
 * oohk skips its own directory.
 * Let oo always create a user-script config file for every script automatically instead of manually by the user when needed.
-* Implement an immediate email warning, when requestedin user-script config file.</div>
+* ~~Implement an immediate email warning, when requestedin user-script config file.~~
 * Gunzip the output files.
 * Give oo a version number together with an install script.
-* Create an installation document.
+* ~~Create an installation document.~~
 * Let oo send an email immediately after the script has run with a return code unequal to 0, when requested.
-* Let oo signal a hanging script (set maximum run time or something like that.
-
+* ~~Let oo signal a hanging script (set maximum run time or something like that.~~
