@@ -99,15 +99,6 @@ do
     done
     echo "  Total files for user ""$oo_user"": ""$oo_userfiles" >>$oo_temp_user_output
     echo "  Total with returncode <> 0 : ""$oo_userfiles_resultcode" >>$oo_temp_user_output
-    # send email when requested
-    if [[ -f "$oo_confpath"/users.conf/"$oo_user"/oo.conf ]] ; then
-      eval $(grep "^oo_user_email=" "$oo_confpath"/users.conf/"$oo_user"/oo.conf)
-    fi
-    if [[ ! -z "$oo_user_email" ]]; then
-      echo "Sending email" >>$oo_temp_user_output
-      cat "$oo_temp_user_output" | mail $oo_user_email -s "$(hostname)-$(basename $0)-$oo_userfiles_resultcode scripts with return code <> 0"
-      oo_user_email=
-    fi
     cat $oo_temp_user_output
     echo
   fi

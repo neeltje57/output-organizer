@@ -63,6 +63,35 @@ oo_confpath="/home/peter/oo/etc/oo"
     eval $(grep "^oo_delete_after_days=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
     eval $(grep "^oo_user_email=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
     eval $(grep "^oo_email_rc_ge=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname") 
+  else
+    # Create a default user-parms file
+    mkdir -p "$oo_confpath"/users.conf/"$(whoami)"
+    { 
+    echo "# The default parameters for every script can be overruled in this file."
+    echo "# normal path and name for this file will be, as an example, for user=root"
+    echo "# and scriptname=ootest: /etc/oo/users.conf/root/ootest"
+    echo "# If another user runs a script with the same name, a new file must be"
+    echo "# created for that user."
+    echo "#"
+    echo "#oo_max_run_time_sec=2"
+    echo "# The maximum time a script is allowed to run. After that time,"
+    echo "# the script will be killed."
+    echo "#"
+    echo "#oo_delete_after_days=3"
+    echo "# This parameter set the days before an output file will be deleted."
+    echo "#"
+    echo "#oo_user_email=$(whoami)"
+    echo "# The email address to send the output to (depends also on the next parameter."
+    echo "#"
+    echo "#oo_email_rc_ge=0"
+    echo "# With this parameter you tell oo when to send an email. If the return code"
+    echo "# is greater or equal (ge) to this parameter, the email will be send (when"
+    echo "# email address is given)."
+    echo "# comment means no email"
+    echo "# 0 means always an email"
+    echo "# 1 means only when return code is not equal to zero"
+    echo "# 2 and bigger send an email when greater than."
+    }>"$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname"
   fi
 
 # if oo_max_run_time_sec is not set, give it the default value
