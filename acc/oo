@@ -1,0 +1,209 @@
+#!/bin/bash         
+# ==================================================================================
+# /usr/local/bin/oonew
+# ==================================================================================
+# Change this variable to the directory where the configurationi files are stored. =
+# Normally this would be: oo_confpath="/etc/oo"                                    =
+# The quotes are needed in case there are spaces in the directory name.            =
+oo_confpath="/home/peter/software/oo/etc/oo"
+# ==================================================================================
+
+# ===========================================================================
+# Don't change anything below this line unless you know what you are doing. =
+# ===========================================================================
+#
+
+# oo needs a scriptname to process
+  oo_full_scriptname="$1"
+  if [[ ! -f "$oo_full_scriptname" ]] ; then
+    echo "File ""$oo_full_scriptname"" does not exist"
+    exit 1
+  fi
+
+# check if oo.conf exists and, if so, try to read the parms or exit 1
+  if [[ ! -f "$oo_confpath"/oo.conf ]] ; then
+    echo "Config file not found"
+    exit 1
+  else
+    eval $(grep "^oo_delete_after_days_min=" "$oo_confpath"/oo.conf)
+    eval $(grep "^oo_delete_after_days_max=" "$oo_confpath"/oo.conf)
+    eval $(grep "^oo_logbasepath=" "$oo_confpath"/oo.conf)
+    eval $(grep "^oo_default_run_time_sec=" "$oo_confpath"/oo.conf)
+    if [[ -z "$oo_delete_after_days_min" || \
+        -z "$oo_delete_after_days_max" || \
+        -z "$oo_logbasepath" || \
+        -z "$oo_default_run_time_sec" \
+       ]]; 
+    then
+      echo "One or more mandatory variables are not set in the config file: ""$oo_confpath"/oo.conf
+      echo "  oo_delete_after_days_min: ""$oo_delete_after_days_min"
+      echo "  oo_delete_after_days_max: ""$oo_delete_after_days_max"
+      echo "  oo_logbasepath          : ""$oo_logbasepath"
+      echo "  oo_default_run_time_sec : ""$oo_default_run_time_sec"
+      exit 1
+    fi
+  fi
+
+# check if output directory exists
+  if [[ ! -d "$oo_logbasepath" ]]; then
+    echo "Output directory not created or not mounted, script will exit"
+    exit 1
+  fi
+
+# create output path if it does not exist
+  oo_base_scriptname=`basename "$oo_full_scriptname"`
+  oo_outputdir="$oo_logbasepath"/"$(whoami)"/"$oo_base_scriptname"
+  if [[ ! -d "$oo_outputdir" ]]; then
+    mkdir -p "$oo_outputdir"
+  fi
+
+# get_user_parms, if exists
+  if [[ -f "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname" ]] ; then
+    eval $(grep "^oo_max_run_time_sec=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
+    eval $(grep "^oo_delete_after_days=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
+    eval $(grep "^oo_user_email=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname")
+    eval $(grep "^oo_email_rc_ge=" "$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname") 
+  else
+    # Create a default user-parms file
+    mkdir -p "$oo_confpath"/users.conf/"$(whoami)"
+    { 
+    echo "# The default parameters for every script can be overruled in this file."
+    echo "# normal path and name for this file will be, as an example, for user=root"
+    echo "# and scriptname=ootest: /etc/oo/users.conf/root/ootest"
+    echo "# If another user runs a script with the same name, a new file must be"
+    echo "# created for that user."
+    echo "#"
+    echo "#oo_max_run_time_sec=2"
+    echo "# The maximum time a script is allowed to run. After that time,"
+    echo "# the script will be killed."
+    echo "#"
+    echo "#oo_delete_after_days=3"
+    echo "# This parameter set the days before an output file will be deleted."
+    echo "#"
+    echo "#oo_user_email=$(whoami)"
+    echo "# The email address to send the output to (depends also on the next parameter."
+    echo "#"
+    echo "#oo_email_rc_ge=0"
+    echo "# With this parameter you tell oo when to send an email. If the return code"
+    echo "# is greater or equal (ge) to this parameter, the email will be send (when"
+    echo "# email address is given)."
+    echo "# comment means no email"
+    echo "# 0 means always an email"
+    echo "# 1 means only when return code is not equal to zero"
+    echo "# 2 and bigger send an email when greater than."
+    }>"$oo_confpath"/users.conf/"$(whoami)"/"$oo_base_scriptname"
+  fi
+
+# if oo_max_run_time_sec is not set, give it the default value
+  if [[ -z "$oo_max_run_time_sec" ]]; then
+    oo_max_run_time_sec=$oo_default_run_time_sec
+  fi
+
+# Check if oo_delete_after_days is a valid integer, if not default minimum will be used
+  oo_regex='^[0-9]+$'
+  # check if oo_delete_after_days consists of a valid integer
+  if ! [[ $oo_delete_after_days =~ $oo_regex ]] ; then
+    oo_delete_after_days=$oo_delete_after_days_min
+  fi
+  # Value must be bigger than 1
+  if [[ "$oo_delete_after_days" -lt 1 ]] ; then
+    oo_delete_after_days=$oo_delete_after_days_min
+  fi
+  # value must be smaller than max
+  if [[ "$oo_delete_after_days" -gt $oo_delete_after_days_max ]] ; then
+    oo_delete_after_days=$oo_delete_after_days_max
+  fi
+
+# fill some more parms
+  oo_expiration_date=$(date +"%Y-%m-%d" --date="-$oo_delete_after_days days ago")
+  oo_suffix=`date '+%Y-%m-%d_%H:%M:%S.%3N'`
+  oo_stdout="$oo_outputdir"/"$oo_base_scriptname".$oo_suffix.out
+  oo_temp_stderr=$(mktemp)
+  oo_temp_stdout=$(mktemp)
+
+# execute the actual script and catch the reisultcode from the timeout command
+  # $2 is variable $1, $3 is $2, and so on
+  {
+  timeout "$oo_max_run_time_sec"s /bin/bash "$oo_full_scriptname" $2 $3 $4 $5 $6 $7 $8 $9
+  oo_result=$? # 124 means command timed out
+  } >"$oo_temp_stdout" 2>"$oo_temp_stderr"
+
+# create return code
+oo_result=$(echo 000$oo_result | tail -c 4)
+
+# Assemble final outputfile
+  {
+  echo "Don't change anything in this section or the file might be deleted during housekeeping."
+  echo "Script result code: $oo_result"
+  echo "Expiration date   : ""$oo_expiration_date"
+  echo "Execution started : $oo_suffix"
+  echo "script            : ""$oo_full_scriptname"
+  echo "User              : ""$(whoami)"
+  echo "Execution ended   : `date '+%Y-%m-%d_%H:%M:%S.%3N'`"
+  echo "stdout            : ""$oo_stdout"
+  echo "temp_stdout       : $oo_temp_stdout"
+  echo "temp_stderr       : $oo_temp_stderr"
+  echo "Expiration days   : $oo_delete_after_days"
+  echo "Expiration (min)  : $oo_delete_after_days_min"
+  echo "Expiration (max)  : $oo_delete_after_days_max"
+  echo "timeout (in sec)  : $oo_max_run_time_sec"
+  echo "variable 1        : $2"
+  echo "variable 2        : $3"
+  echo "variable 3        : $4"
+  echo "variable 4        : $5"
+  echo "variable 5        : $6"
+  echo "variable 6        : $7"
+  echo "variable 7        : $8"
+  echo "variable 8        : $9"
+  echo "email address     : $oo_user_email"
+  echo "oo_email_rc_ge    : $oo_email_rc_ge"
+
+# Email if requested
+  oo_sending_email=false
+  if [[ ! -z "$oo_user_email" ]] && [[ ! -z "$oo_email_rc_ge" ]]; then
+    if [[ "$oo_result" -ge "$oo_email_rc_ge" ]]; then
+      echo "Sending email     : yes"
+      oo_sending_email=true
+    else 
+      echo "Sending email     : no"
+    fi
+  else
+    echo "sending email     : No"
+  fi
+  echo
+
+# stderr
+  echo "========== stderr below =========="
+  if [[ -s "$oo_temp_stderr" ]]; then
+    cat "$oo_temp_stderr"
+  else
+    echo "stderr is empty"
+  fi
+  echo "========== stderr above =========="
+  echo
+  rm -f "$oo_temp_stderr"
+
+# stdout
+  echo "========== stdout below =========="
+  if [[ -s "$oo_temp_stdout" ]]; then
+    cat "$oo_temp_stdout"
+  else
+    echo "stdout is empty"
+  fi
+  echo "========== stdout above =========="
+  rm -f "$oo_temp_stdout"
+
+# script
+  echo "========== script below =========="
+  cat "$oo_full_scriptname" 
+  echo "========== script above =========="
+  echo
+
+  } >"$oo_stdout"
+
+# Email if requested
+  if [[ "$oo_sending_email" = true ]]; then
+    cat $oo_stdout | mail $oo_user_email -s "$(hostname)-$(whoami)-$oo_base_scriptname"
+  fi
+
+exit 0

@@ -1,0 +1,36 @@
+Don't change anything in this section or the file might be deleted during housekeeping.
+Script result code: 124
+Expiration date   : 2022-03-31
+Execution started : 2022-03-28_20:43:36.821
+script            : ootest
+User              : peter
+Execution ended   : 2022-03-28_20:43:38.830
+stdout            : /home/peter/oo/var/log/oo/peter/ootest/ootest.2022-03-28_20:43:36.821.out
+temp_stdout       : /tmp/tmp.dz0jlnGSyG
+temp_stderr       : /tmp/tmp.BtL1PrqFUz
+Expiration days   : 3
+Expiration (min)  : 3
+Expiration (max)  : 100
+timeout (in sec)  : 2
+variable 1        : 
+variable 2        : 
+variable 3        : 
+variable 4        : 
+variable 5        : 
+variable 6        : 
+variable 7        : 
+variable 8        : 
+
+========== stderr below ==========
+stderr is empty
+========== stderr above ==========
+
+========== script below ==========
+#!/bin/bash
+sleep 10s
+exit 0
+========== script above ==========
+
+========== stdout below ==========
+stdout is empty
+========== stdout above ==========

@@ -1,0 +1,39 @@
+Don't change anything in this section or the file might be deleted during housekeeping.
+Script result code: 000
+Expiration date   : 2022-04-01
+Execution started : 2022-03-29_10:16:21.444
+script            : ootest
+User              : peter
+Execution ended   : 2022-03-29_10:16:22.456
+stdout            : /home/peter/oo/var/log/oo/peter/ootest/ootest.2022-03-29_10:16:21.444.out
+temp_stdout       : /tmp/tmp.BEsGofd57m
+temp_stderr       : /tmp/tmp.rXD3MMt0Gw
+Expiration days   : 3
+Expiration (min)  : 3
+Expiration (max)  : 100
+timeout (in sec)  : 2
+variable 1        : 
+variable 2        : 
+variable 3        : 
+variable 4        : 
+variable 5        : 
+variable 6        : 
+variable 7        : 
+variable 8        : 
+email address     : root
+oo_email_rc_ge    : 1
+Sending email     : no
+
+========== stderr below ==========
+stderr is empty
+========== stderr above ==========
+
+========== stdout below ==========
+stdout is empty
+========== stdout above ==========
+========== script below ==========
+#!/bin/bash
+sleep 1s
+exit 0
+========== script above ==========
+

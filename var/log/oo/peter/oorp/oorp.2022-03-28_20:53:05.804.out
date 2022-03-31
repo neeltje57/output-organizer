@@ -1,0 +1,178 @@
+Don't change anything in this section or the file might be deleted during housekeeping.
+Script result code: 000
+Expiration date   : 2022-03-31
+Execution started : 2022-03-28_20:53:05.804
+script            : oorp
+User              : peter
+Execution ended   : 2022-03-28_20:53:05.849
+stdout            : /home/peter/oo/var/log/oo/peter/oorp/oorp.2022-03-28_20:53:05.804.out
+temp_stdout       : /tmp/tmp.P7O40anJ7M
+temp_stderr       : /tmp/tmp.GFdEY7Is3q
+Expiration days   : 3
+Expiration (min)  : 3
+Expiration (max)  : 100
+timeout (in sec)  : 60
+variable 1        : 
+variable 2        : 
+variable 3        : 
+variable 4        : 
+variable 5        : 
+variable 6        : 
+variable 7        : 
+variable 8        : 
+
+========== stderr below ==========
+stderr is empty
+========== stderr above ==========
+
+========== stdout below ==========
+Report days ago not specified, assuming 1 (Yesterday)
+Report date is: 2022-03-27
+Processing files for user: peter
+Report date is: 2022-03-27
+  Processing files from directory: /home/peter/oo/var/log/oo/peter/oocd
+    Processed files : 1
+    Return code <> 0: 0
+  Processing files from directory: /home/peter/oo/var/log/oo/peter/oohk
+    Processed files : 1
+    Return code <> 0: 0
+  Processing files from directory: /home/peter/oo/var/log/oo/peter/oorp
+    Processed files : 0
+    Return code <> 0: 0
+  Processing files from directory: /home/peter/oo/var/log/oo/peter/ootest
+    Processed files : 5
+    Return code <> 0: 0
+  Total files for user peter: 7
+  Total with returncode <> 0 : 0
+
+
+Totals
+  Total files                : 7
+  Total with returncode <> 0 : 0
+========== stdout above ==========
+========== script below ==========
+#!/bin/bash
+# ==================================================================================
+# /usr/local/bin/oorp
+# ==================================================================================
+# Change this variable to the directory where the configurationi files are stored. =
+# Normally this would be: oo_confpath="/etc/oo"                                    =
+# The quotes are needed in case there are spaces in the directory name.            =
+oo_confpath="/home/peter/oo/etc/oo"
+# ==================================================================================
+
+# ===========================================================================
+# Don't change anything below this line unless you know what you are doing. =
+# ===========================================================================
+
+# Load configuration file
+# Get parms from system config file
+if [[ -f "$oo_confpath"/oo.conf ]] ; then
+  eval $(grep "^oo_logbasepath=" "$oo_confpath"/oo.conf)
+fi
+if [[ -z "$oo_logbasepath" ]]; then
+  echo "One or more mandatory variables are not set in the config file: ""$oo_confpath"/oo.conf
+  echo "  oo_logbasepath          : ""$oo_logbasepath"
+  echo "see documentation"
+  exit 1
+fi
+
+function oo_isvaliddate() {
+ if [[ "$1" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] && date -d "$1">/dev/null 2>&1; then
+   return 0
+ else
+   return 1
+ fi;
+}
+
+oo_reportfile=$(mktemp)
+{
+if [[ -z "$1" ]]; then
+  echo "Report days ago not specified, assuming 1 (Yesterday)"
+  oo_daysago=1
+else
+  oo_daysago=$1
+fi
+oo_reportdate=`date -d "$oo_daysago days ago" +"%Y-%m-%d"`
+echo "Report date is: $oo_reportdate"
+oo_totalfiles=0
+oo_totalfiles_resultcode=0
+oo_dirfiles=0
+oo_dirfiles_resultcode=0
+oo_userfiles=0
+oo_userfiles_resultcode=0
+oo_currentdate=`date +%Y-%m-%d`
+oo_temp_user_output=$(mktemp)
+for oo_userdir in "$oo_logbasepath"/*
+do
+  if [[ -d "$oo_userdir" ]]; then
+    # directory per user
+    oo_user=`basename "$oo_userdir"`
+    echo "Processing files for user: ""$oo_user" >$oo_temp_user_output
+    echo "Report date is: $oo_reportdate" >>$oo_temp_user_output
+    oo_userfiles=0;oo_userfiles_resultcode=0
+    for oo_directory2 in "$oo_userdir"/*
+    do
+      if [[ -d "$oo_directory2" ]]; then
+        # directory per user script
+        echo "  Processing files from directory: ""$oo_directory2" >>$oo_temp_user_output
+        oo_dirfiles=0;oo_dirfiles_resultcode=0
+        for oo_file in "$oo_directory2"/*
+        do
+          if [[ -f "$oo_file" ]]; then
+            # process each file in user script directory
+            # echo "-""$oo_file"
+            (( oo_totalfiles++ ))
+            (( oo_userfiles++ ))
+            (( oo_dirfiles++ ))
+            oo_resultcodeline=`sed -n '2p' "$oo_file"`
+            oo_resultcode=${oo_resultcodeline:20:3}
+            oo_executionline=`sed -n '4p' "$oo_file"`
+            oo_executiondate=${oo_executionline:20:10}
+            #echo 1"$oo_resultcodeline"
+            #echo 2"$oo_resultcode"
+            #echo 3"$oo_executionline"
+            #echo 4"$oo_executiondate"
+            if [[ "$oo_executiondate" == "$oo_reportdate" ]]; then
+              #echo "oo_resultcode: $oo_resultcode"
+              if [[ "$oo_resultcode" -ne "0" ]]; then
+                (( oo_totalfiles_resultcode++ ))
+                (( oo_dirfiles_resultcode++ ))
+                (( oo_userfiles_resultcode++ ))
+                oo_scriptnameline=`sed -n '5p' "$oo_file"`
+                oo_scriptname=${oo_scriptnameline:20:15}
+                echo "    $oo_resultcode" "$oo_file" >>$oo_temp_user_output
+              fi
+            fi
+          fi
+        done
+        echo "    Processed files : $oo_dirfiles" >>$oo_temp_user_output
+        echo "    Return code <> 0: $oo_dirfiles_resultcode" >>$oo_temp_user_output
+      fi
+    done
+    echo "  Total files for user ""$oo_user"": ""$oo_userfiles" >>$oo_temp_user_output
+    echo "  Total with returncode <> 0 : ""$oo_userfiles_resultcode" >>$oo_temp_user_output
+    # send email when requested
+    if [[ -f "$oo_confpath"/users.conf/"$oo_user"/oo.conf ]] ; then
+      eval $(grep "^oo_user_email=" "$oo_confpath"/users.conf/"$oo_user"/oo.conf)
+    fi
+    if [[ ! -z "$oo_user_email" ]]; then
+      echo "Sending email" >>$oo_temp_user_output
+      cat "$oo_temp_user_output" | mail $oo_user_email -s "$(hostname)-$(basename $0)-$oo_userfiles_resultcode scripts with return code <> 0"
+      oo_user_email=
+    fi
+    cat $oo_temp_user_output
+    echo
+  fi
+done
+echo
+echo "Totals"
+echo "  Total files                : ""$oo_totalfiles"
+echo "  Total with returncode <> 0 : ""$oo_totalfiles_resultcode"
+} >"$oo_reportfile"
+cat "$oo_reportfile"
+
+rm -f "$oo_reportfile"
+rm -f "$oo_temp_user_output"
+========== script above ==========
+
