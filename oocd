@@ -5,7 +5,7 @@
 # Change this variable to the directory where the configuration files are stored.  =
 # Normally this would be: oo_confpath="/etc/oos"                                   =
 # The quotes are needed in case there are spaces in the directory name.            =
-oo_confpath="/home/peter/software/oo/etc/oo"
+oo_confpath="/etc/oo"
 # ==================================================================================
 
 # ===========================================================================
