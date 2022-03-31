@@ -1,0 +1,27 @@
+#!/bin/bash
+
+SERVERS=( "batch" "mail" "web1" "web2" "web3" )
+SOURCE_PATH="/home/peter/software/oo"
+
+rm -rf "$SOURCE_PATH"/acc/*
+rm -rf "$SOURCE_PATH"/acc/.*
+cp -r "$SOURCE_PATH"/git/* "$SOURCE_PATH"/acc/
+cp -r "$SOURCE_PATH"/git/.* "$SOURCE_PATH"/acc/
+cd "$SOURCE_PATH"/acc
+sed -i 's/"\/home\/peter\/oo\/etc\/oo"/"\/etc\/oo"/g' oo
+sed -i 's/"\/home\/peter\/oo\/etc\/oo"/"\/etc\/oo"/g' oocd
+sed -i 's/"\/home\/peter\/oo\/etc\/oo"/"\/etc\/oo"/g' oohk
+sed -i 's/"\/home\/peter\/oo\/etc\/oo"/"\/etc\/oo"/g' oorp
+git add .
+git commit -m "Moving to prod"
+git push --set-upstream origin master
+
+for s in "${SERVERS[@]}"
+do
+  scp "$SOURCE_PATH"/acc/oo root@"$s":/usr/local/bin/
+  scp "$SOURCE_PATH"/acc/oocd root@"$s":/usr/local/bin/
+  scp "$SOURCE_PATH"/acc/oohk root@"$s":/usr/local/bin/
+  scp "$SOURCE_PATH"/acc/oorp root@"$s":/usr/local/bin/
+done
+
+exit
