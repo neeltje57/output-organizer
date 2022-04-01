@@ -1,13 +1,17 @@
 #!/bin/bash
 # ==================================================================================
-# /usr/local/bin/oocdnew
+# /usr/local/bin/oocd
 # ==================================================================================
 # Change this variable to the directory where the configuration files are stored.  =
 # Normally this would be: oo_confpath="/etc/oos"                                   =
 # The quotes are needed in case there are spaces in the directory name.            =
 oo_confpath="/etc/oo"
 # ==================================================================================
-
+# In oo, only valid users can run scripts. So, you can only have subdirectories
+# in the base output directory which are from a valid user. The same applies to the
+# etc directories. oocd checks if the directories are from valid users, and if not, 
+# it will delete it, and exits with return code 1.
+# Otherwise it will exits with 0.
 # ===========================================================================
 # Don't change anything below this line unless you know what you are doing. =
 # ===========================================================================
@@ -26,10 +30,10 @@ if [[ -z "$oo_logbasepath" \
 fi
 
 oo_temp_logfile=$(mktemp)
-oo_deleted_dirs=0
-
+oo_deleted_var_dirs=0
+oo_deleted_etc_dirs=0
 {
-# loop through the directories
+# loop through the var directories
 for oocd_directory in $oo_logbasepath/*
 do
   if [[ -d $oocd_directory ]]; then
@@ -37,7 +41,21 @@ do
     if [[ -z "$(getent passwd $oocd_userdir)" ]]; then
       # delete directory of non existent user
       echo "Deleting "$oocd_directory" ..."
-      (( oo_deleted_dirs++ ))
+      (( oo_deleted_var_dirs++ ))
+      rm -rf "$oocd_directory"
+    fi
+  fi
+done
+
+# loop through the etc directories
+for oocd_directory in $oo_confpath/users.conf/*
+do
+  if [[ -d $oocd_directory ]]; then
+    oocd_userdir=`basename "$oocd_directory"`
+    if [[ -z "$(getent passwd $oocd_userdir)" ]]; then
+      # delete directory of non existent user
+      echo "Deleting "$oocd_directory" ..."
+      (( oo_deleted_etc_dirs++ ))
       rm -rf "$oocd_directory"
     fi
   fi
@@ -46,3 +64,9 @@ done
 
 cat $oo_temp_logfile
 rm -f $oo_temp_logfile
+
+if [[ $oo_deleted_var_dirs -ne 0 || $oo_deleted_etc_dirs -ne 0 ]]; then
+  exit 1
+else
+  exit 0
+fi

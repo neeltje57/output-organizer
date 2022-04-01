@@ -7,7 +7,12 @@
 # The quotes are needed in case there are spaces in the directory name.            =
 oo_confpath="/etc/oo"
 # ==================================================================================
-
+# The housekeeping job oohk checks all the output directories and files. It will
+# delete expired output files and empty directories. It will also check if the
+# expiration date is valid. If not, the file will also be deleted (and the filename
+# will be printed.
+# oohk exits with return code 1 when there were invaliddates detected, otherwise
+# it exits with 0.
 # ===========================================================================
 # Don't change anything below this line unless you know what you are doing. =
 # ===========================================================================
@@ -118,3 +123,9 @@ echo "Total empty directories: ""$oo_totalemptydirs"
 } >"$oo_reportfile"
 cat "$oo_reportfile"
 rm -f "$oo_reportfile"
+
+if [[ $oo_totalinvaliddates -eq 0 ]]; then
+  exit 0
+else
+  exit 1
+fi

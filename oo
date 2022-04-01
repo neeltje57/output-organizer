@@ -1,6 +1,6 @@
 #!/bin/bash         
 # ==================================================================================
-# /usr/local/bin/oonew
+# /usr/local/bin/oo
 # ==================================================================================
 # Change this variable to the directory where the configurationi files are stored. =
 # Normally this would be: oo_confpath="/etc/oo"                                    =

@@ -7,7 +7,10 @@
 # The quotes are needed in case there are spaces in the directory name.            =
 oo_confpath="/etc/oo"
 # ==================================================================================
-
+# oorp checks the return code of the scripts which ran under control of oo and
+# reports it.
+# oorp exits with 1 of it finds a return code not equal to 0, otherwise it exits
+# with 0.
 # ===========================================================================
 # Don't change anything below this line unless you know what you are doing. =
 # ===========================================================================
@@ -84,6 +87,7 @@ do
               #echo "oo_resultcode: $oo_resultcode"
               if [[ "$oo_resultcode" -ne "0" ]]; then
                 (( oo_totalfiles_resultcode++ ))
+                oo_result_code=1
                 (( oo_dirfiles_resultcode++ ))
                 (( oo_userfiles_resultcode++ ))
                 oo_scriptnameline=`sed -n '5p' "$oo_file"`
@@ -112,3 +116,9 @@ cat "$oo_reportfile"
 
 rm -f "$oo_reportfile"
 rm -f "$oo_temp_user_output"
+
+if [[ $oo_totalfiles_resultcode -eq 0 ]]; then
+  exit 0
+else
+  exit 1
+fi
