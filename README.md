@@ -57,7 +57,7 @@ You can use the same syntax to schedule your scripts in cron (crontab -e):
 
 > 0 * * * * /usr/local/bin/oo /path/to/your/script/script-to-execute parm1i parm2 ... parm8
 ### 4.2 oocd
-oocd is a housekeeping script which checks for unwanted directories in /var/log/oo. The sub directories in /var/log/oo can only have the name of a valid user, but because the sticky bit is set (chmod 1777) users might create unwanted directories. oocd takes care of this by deleting them. You can schedule this script once a day in cron (crontab -e):
+oocd is a housekeeping script which checks for unwanted directories in /var/log/oo. The sub directories in /var/log/oo and /etc/oo/users.conf/ can only have the name of a valid user, but because the sticky bit is set (chmod 1777) users might create unwanted directories. oocd takes care of this by deleting them. You can schedule this script once a day in cron (crontab -e):
 > 1 0 * * * /usr/local/bin/oo /usr/local/bin/oocd
 ### 4.3 oohk
 oohk is a housekeeping script which checks all the output files in /var/log/oo/user/. If a file has the wrong format (maybe a user accidentally put it there or updated it wrongly) or the file is expired, it will be deleted. If requested, a detailed email can be send to the user or an overal email to the administrator. You can schedule this script once a day in cron (crontab -e):

@@ -5,7 +5,7 @@
 # Change this variable to the directory where the configurationi files are stored. =
 # Normally this would be: oo_confpath="/etc/oo"                                    =
 # The quotes are needed in case there are spaces in the directory name.            =
-oo_confpath="/etc/oo"
+oo_confpath="/home/peter/software/oo/etc/oo"
 # ==================================================================================
 
 # ===========================================================================
@@ -73,7 +73,7 @@ oo_confpath="/etc/oo"
     echo "# If another user runs a script with the same name, a new file must be"
     echo "# created for that user."
     echo "#"
-    echo "#oo_max_run_time_sec=2"
+    echo "#oo_max_run_time_sec=15"
     echo "# The maximum time a script is allowed to run. After that time,"
     echo "# the script will be killed."
     echo "#"
