@@ -1,0 +1,10 @@
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Cleaning up directories from oo
+1 0 * * * root /usr/local/bin/oo /usr/local/bin/oocd
+
+# Cleaning up expired reports
+2 0 * * * root /usr/local/bin/oo /usr/local/bin/oohk
+
+# Create a report file
+10 0 * * * root /usr/local/bin/oo /usr/local/bin/oorp 1

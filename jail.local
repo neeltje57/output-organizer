@@ -1,0 +1,13 @@
+[DEFAULT]
+bantime = 6h
+maxretry = 6
+findtime = 6h
+
+ignoreip = 84.80.124.212
+
+[apache-auth]
+enabled = true
+
+[sshd]
+enabled = true
+publickey = any
